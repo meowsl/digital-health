@@ -1,23 +1,31 @@
-from typing import Union
 from fastapi import FastAPI
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy_utils import database_exists, create_database
-from .routes import devices_router
-from .config import SQLALCHEMY_DATABASE_URL
-
-def connect_db():
-    engine = create_engine(SQLALCHEMY_DATABASE_URL)
-    if not database_exists(engine.url):
-        create_database(engine.url)
-
-connect_db()
+from fastapi.responses import RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+from .routes import (
+    devices_router,
+    user_router
+)
+from .settings import (
+    ORIGINS,
+    Base,
+    engine
+)
 
 app = FastAPI()
 
+Base.metadata.create_all(bind=engine)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return RedirectResponse("http://localhost:8000/docs")
 
+app.include_router(user_router)
 app.include_router(devices_router)
