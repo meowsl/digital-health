@@ -20,7 +20,7 @@ run-backend:
 
 .PHONY: run-frontend
 run-frontend:
-	@yarn start
+	@yarn dev
 
 .PHONY: run
 run:
