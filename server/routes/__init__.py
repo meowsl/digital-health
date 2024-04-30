@@ -1,0 +1,1 @@
+from .example import devices_router
