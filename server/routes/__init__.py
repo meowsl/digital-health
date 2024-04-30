@@ -1,1 +1,1 @@
-from .example import devices_router
+from .devices import devices_router

@@ -8,6 +8,7 @@ install-frontend:
 install-backend:
 	@poetry env use 3.12.1
 	@poetry install --no-root
+	@poetry run python $(BACKEND_DIR)/environment.py && echo .env successfully created
 
 .PHONY: install
 install:
