@@ -10,18 +10,16 @@ from server.settings import (
 import server.schemas as schemas
 import server.service as service
 
-devices_router = APIRouter()
+devices_router = APIRouter(prefix="/devices", tags=["Devices"])
 
-DEFAULT_ROUTER = "/devices"
-
-@devices_router.get(f"{DEFAULT_ROUTER}/", summary="Get all devices")
+@devices_router.get("", summary="Get all devices")
 async def get_devices(db: SessionLocal = Depends(get_db)):
     '''
     Получение всех устройств
     '''
     return service.get_device_list(db)
 
-@devices_router.post(f"{DEFAULT_ROUTER}/", summary="Create a new device")
+@devices_router.post("", summary="Create a new device")
 async def post_devices(device: schemas.DeviceBase, db: SessionLocal = Depends(get_db)):
     '''
     Добавление нового устройства

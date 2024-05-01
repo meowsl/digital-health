@@ -11,11 +11,9 @@ from server.settings import (
 import server.schemas as schemas
 import server.service as service
 
-user_router = APIRouter()
+user_router = APIRouter(prefix="/user", tags=["Authorizaton"])
 
-DEFAULT_ROUTER = "/user"
-
-@user_router.post(f"{DEFAULT_ROUTER}/register", summary="Registering a new user")
+@user_router.post("/register", summary="Registering a new user")
 async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
     '''
     Регистрация пользователя
@@ -27,7 +25,7 @@ async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db))
 
     return service.create_user(db=db, user=user)
 
-@user_router.post(f"{DEFAULT_ROUTER}/login", summary="User authorization")
+@user_router.post("/login", summary="User authorization")
 async def login(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
     '''
     Авторизация
