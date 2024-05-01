@@ -14,5 +14,5 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = Column(Integer, primary_key=True)
-    username: Mapped[str] = Column(String(128), unique=True)
-    password: Mapped[str] = Column(String)
+    username: Mapped[str] = Column(String(128), unique=True, info={"label":"Логин"})
+    password: Mapped[str] = Column(String, info={"label":"Пароль"})

@@ -4,7 +4,10 @@ from fastapi import (
     Depends
 )
 from werkzeug.security import check_password_hash
-from server.settings import SessionLocal
+from server.settings import (
+    SessionLocal,
+    get_db
+)
 import server.schemas as schemas
 import server.service as service
 
@@ -12,15 +15,11 @@ user_router = APIRouter()
 
 DEFAULT_ROUTER = "/user"
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-@user_router.post(f"{DEFAULT_ROUTER}/register", response_model=schemas.User)
+@user_router.post(f"{DEFAULT_ROUTER}/register", summary="Registering a new user")
 async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
+    '''
+    Регистрация пользователя
+    '''
     db_user = service.get_user_by_username(db, username=user.username)
 
     if db_user:
@@ -28,8 +27,11 @@ async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db))
 
     return service.create_user(db=db, user=user)
 
-@user_router.post(f"{DEFAULT_ROUTER}/login")
+@user_router.post(f"{DEFAULT_ROUTER}/login", summary="User authorization")
 async def login(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
+    '''
+    Авторизация
+    '''
     db_user = service.get_user_by_username(db, username=user.username)
 
     if not db_user:
