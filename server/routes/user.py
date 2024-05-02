@@ -11,7 +11,7 @@ from server.settings import (
 import server.schemas as schemas
 import server.service as service
 
-user_router = APIRouter(prefix="/user", tags=["Authorizaton"])
+user_router = APIRouter(prefix="/user", tags=["Authentication"])
 
 @user_router.post("/register", summary="Registering a new user")
 async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):

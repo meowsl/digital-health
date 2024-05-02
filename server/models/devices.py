@@ -11,6 +11,7 @@ from sqlalchemy.orm import(
     relationship
 )
 from server.settings import Base
+from .association_table import user_device_table
 
 class Device(Base):
     '''
@@ -22,6 +23,8 @@ class Device(Base):
     name: Mapped[str] = Column(String(128), unique=True, info={"label": "Название устройства"})
 
     data = relationship("DeviceData", back_populates="device", cascade="all, delete-orphan")
+
+    users = relationship("User", secondary=user_device_table, back_populates="devices")
 
 class DeviceData(Base):
     '''
