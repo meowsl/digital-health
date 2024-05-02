@@ -25,6 +25,8 @@ class Device(Base):
     data = relationship("DeviceData", back_populates="device", cascade="all, delete-orphan")
 
     users = relationship("User", secondary=user_device_table, back_populates="devices")
+    measurements = relationship("Measurement", back_populates="device")
+
 
 class DeviceData(Base):
     '''
@@ -38,3 +40,4 @@ class DeviceData(Base):
     device_id: Mapped[int] = Column(Integer, ForeignKey("device.id"))
 
     device = relationship("Device", back_populates="data")
+    measurements = relationship("Measurement", back_populates="data")

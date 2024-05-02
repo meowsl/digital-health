@@ -24,6 +24,7 @@ class User(Base):
     email: Mapped[str] = Column(String(128), unique=True, info={"label":"Электронная почта"})
 
     devices = relationship("Device", secondary=user_device_table, back_populates="users")
+    measurements = relationship("Measurement", back_populates="user")
 
 @listens_for(User, "before_insert")
 def hash_password(mapper, connection, target):

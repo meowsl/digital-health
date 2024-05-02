@@ -9,7 +9,8 @@ from .settings import (
 )
 from .routes import (
     devices_router,
-    user_router
+    user_router,
+    measurement_routes
 )
 from .admin import *
 
@@ -32,6 +33,7 @@ def read_root():
 
 app.include_router(user_router)
 app.include_router(devices_router)
+app.include_router(measurement_routes)
 
 admin.add_view(UserAdmin)
 admin.add_view(DeviceAdmin)
