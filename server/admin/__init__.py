@@ -3,3 +3,4 @@ from .devices import (
     DeviceAdmin,
     DeviceDataAdmin
 )
+from .measurement import MeasurementAdmin

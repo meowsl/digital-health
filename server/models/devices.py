@@ -27,6 +27,9 @@ class Device(Base):
     users = relationship("User", secondary=user_device_table, back_populates="devices")
     measurements = relationship("Measurement", back_populates="device")
 
+    def __str__(self):
+        return self.name
+
 
 class DeviceData(Base):
     '''
@@ -41,3 +44,6 @@ class DeviceData(Base):
 
     device = relationship("Device", back_populates="data")
     measurements = relationship("Measurement", back_populates="data")
+
+    def __str__(self):
+        return self.indicator

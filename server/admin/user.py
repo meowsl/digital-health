@@ -2,4 +2,17 @@ from sqladmin import ModelView
 from server.models import User
 
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.username]
+    name = "Пользователь"
+    name_plural = "Пользователи"
+    icon = "fa-solid fa-user-circle"
+
+    column_list = [User.id, User.username, User.email]
+    column_details_list = [User.id, User.username, User.email]
+    column_labels = {
+        User.id: "ID",
+        User.username: "Имя пользователя",
+        User.email: "Электронная почта"
+    }
+
+    # Скрываем поля devices, measurements и password
+    form_excluded_columns = ['devices', 'measurements', 'password']

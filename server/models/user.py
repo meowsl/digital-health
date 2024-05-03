@@ -26,6 +26,9 @@ class User(Base):
     devices = relationship("Device", secondary=user_device_table, back_populates="users")
     measurements = relationship("Measurement", back_populates="user")
 
+    def __str__(self):
+        return self.username
+
 @listens_for(User, "before_insert")
 def hash_password(mapper, connection, target):
     if target.password != generate_password_hash(target.password):
