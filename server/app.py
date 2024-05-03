@@ -5,7 +5,10 @@ from sqladmin import Admin
 from .settings import (
     ORIGINS,
     Base,
-    engine
+    engine,
+    SECRET_KEY,
+    BASE_URL,
+    get_db
 )
 from .routes import (
     devices_router,
@@ -14,8 +17,11 @@ from .routes import (
 )
 from .admin import *
 
+db = next(get_db())
+
 app = FastAPI()
-admin = Admin(app, engine)
+auth = AdminAuth(secret_key=SECRET_KEY, db=db)
+admin = Admin(app, engine, authentication_backend=auth)
 
 Base.metadata.create_all(bind=engine)
 
@@ -29,7 +35,7 @@ app.add_middleware(
 
 @app.get("/", include_in_schema=False)
 def read_root():
-    return RedirectResponse("http://localhost:8000/docs")
+    return RedirectResponse(f"{BASE_URL}/docs")
 
 app.include_router(user_router)
 app.include_router(devices_router)

@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 import server.models as models
 import server.schemas as schemas
 from fastapi import HTTPException
+from werkzeug.security import check_password_hash
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -32,5 +33,16 @@ def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
 
     db.commit()
     db.refresh(db_user)
+
+    return db_user
+
+def authenticate_user(db: Session, user: schemas.UserBase):
+    db_user = get_user_by_username(db=db, username=user.username)
+
+    if not db_user:
+        raise HTTPException(status_code=401, detail="User doesnt exist")
+
+    if not check_password_hash(db_user.password, user.password):
+        raise HTTPException(status_code=401, detail="Incorrect password")
 
     return db_user

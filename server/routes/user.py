@@ -26,17 +26,11 @@ async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db))
     return service.create_user(db=db, user=user)
 
 @user_router.post("/login", summary="User authorization")
-async def login(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
+async def login(user: schemas.UserBase, db: SessionLocal = Depends(get_db)):
     '''
     Авторизация
     '''
-    db_user = service.get_user_by_username(db, username=user.username)
-
-    if not db_user:
-        raise HTTPException(status_code=401, detail="User doesn't exist")
-
-    if not check_password_hash(db_user.password, user.password):
-        raise HTTPException(status_code=403, detail="Password is incorrect")
+    db_user = service.authenticate_user(db=db, user=user)
 
     return HTTPException(status_code=200, detail="Success")
 

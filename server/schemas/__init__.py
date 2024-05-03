@@ -1,7 +1,8 @@
 from .user import (
     User,
     UserCreate,
-    UserDevices
+    UserDevices,
+    UserBase
 )
 from .devices import (
     Device,
