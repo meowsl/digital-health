@@ -1,7 +1,7 @@
 from .authentication import AdminAuth
-from .user import UserAdmin
-from .devices import (
+from server.admin.user import UserAdmin
+from server.admin.devices import (
     DeviceAdmin,
     DeviceDataAdmin
 )
-from .measurement import MeasurementAdmin
+from server.admin.measurement import MeasurementAdmin

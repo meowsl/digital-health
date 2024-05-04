@@ -1,3 +1,3 @@
-from .devices import devices_router
-from .user import user_router
-from .measurement import measurement_routes
+from server.routes.devices import devices_router
+from server.routes.user import user_router
+from server.routes.measurement import measurement_routes

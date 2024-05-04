@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqladmin import Admin
-from .settings import (
+from server.settings import (
     ORIGINS,
     Base,
     engine,
@@ -10,7 +10,7 @@ from .settings import (
     BASE_URL,
     get_db
 )
-from .routes import (
+from server.routes import (
     devices_router,
     user_router,
     measurement_routes

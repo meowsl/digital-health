@@ -1,16 +1,16 @@
-from .user import (
+from server.schemas.user import (
     User,
     UserCreate,
     UserDevices,
     UserBase
 )
-from .devices import (
+from server.schemas.devices import (
     Device,
     DeviceBase,
     DeviceData,
     DeviceDataBase
 )
-from .measurement import (
+from server.schemas.measurement import (
     Measurement,
     MeasurementCreate
 )

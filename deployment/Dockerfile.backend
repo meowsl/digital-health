@@ -1,0 +1,51 @@
+FROM python:3.12-alpine
+
+WORKDIR /var/www/app
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache  \
+    git \
+    postgresql-dev \
+    bash \
+    libc-dev \
+    libffi-dev \
+    mariadb-dev \
+    curl \
+    jpeg-dev \
+    zlib-dev \
+    gcc \
+    musl-dev \
+    cairo-dev \
+    pango-dev \
+    gdk-pixbuf-dev \
+    python3-dev \
+    libxml2 \
+    libxslt \
+    libxslt-dev \
+    fontconfig \
+    ttf-freefont \
+    font-noto \
+    terminus-font \
+    make
+
+RUN  fc-cache -f
+
+RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.7.1 POETRY_HOME=/etc/poetry python3 -
+ENV PATH="${PATH}:/etc/poetry/bin"
+
+COPY poetry.toml poetry.toml
+COPY pyproject.toml pyproject.toml
+COPY poetry.lock poetry.lock
+
+COPY . .
+
+RUN poetry env use 3.12.1
+RUN set -ex && poetry install --no-root
+RUN poetry run python server/settings/environment.py
+
+CMD ["poetry", "run", "uvicorn", "server.app:app", "--host", "0.0.0.0"]
+
