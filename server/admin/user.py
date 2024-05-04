@@ -14,5 +14,4 @@ class UserAdmin(ModelView, model=User):
         User.email: "Электронная почта"
     }
 
-    # Скрываем поля devices, measurements и password
     form_excluded_columns = ['devices', 'measurements', 'password']

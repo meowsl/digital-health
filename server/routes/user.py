@@ -3,7 +3,6 @@ from fastapi import (
     HTTPException,
     Depends
 )
-from werkzeug.security import check_password_hash
 from server.settings import (
     SessionLocal,
     get_db
@@ -33,27 +32,3 @@ async def login(user: schemas.UserBase, db: SessionLocal = Depends(get_db)):
     db_user = service.authenticate_user(db=db, user=user)
 
     return HTTPException(status_code=200, detail="Success")
-
-@user_router.get("/{user_id}/devices", summary="Get all devices for user")
-async def get_devices(user_id: int, db: SessionLocal = Depends(get_db)):
-    '''
-    Получение устройств определенного пользователя
-    '''
-    db_user = service.get_user(db, user_id=user_id)
-
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return service.get_user_devices(db=db, user_id=user_id)
-
-@user_router.post("/{user_id}/devices", summary="Add new device to user")
-async def add_devices(user_id: int, devices: schemas.UserDevices , db: SessionLocal = Depends(get_db)):
-    '''
-    Добавление устройства для пользователя
-    '''
-    db_user = service.get_user(db, user_id=user_id)
-
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return service.add_user_devices(db=db, user_id=user_id, devices=devices)

@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class MeasurementCreate(BaseModel):
-    user_id: int
     device_id: int
     data_id: int
     value: float

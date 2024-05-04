@@ -22,12 +22,12 @@ def get_user_device_measurements(db: Session, user_id: int, device_id: int):
 
     return [measure for measure in user_measurements if measure.device_id == device_id]
 
-def create_measurement(db: Session, measurement: schemas.MeasurementCreate):
+def create_measurement(db: Session, user_id: int, measurement: schemas.MeasurementCreate):
     '''
     Добавление измерения для устройства пользователя
     '''
     new_measurement = models.Measurement(
-        user_id=measurement.user_id,
+        user_id=user_id,
         device_id=measurement.device_id,
         data_id=measurement.data_id,
         value=measurement.value,

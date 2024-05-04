@@ -24,9 +24,3 @@ class MeasurementAdmin(ModelView, model=Measurement):
         'user.username',
         'device.name',
     ]
-
-    def _user_filter(self, user_id):
-        if user_id is None:
-            return None
-        else:
-            return Measurement.user_id == user_id

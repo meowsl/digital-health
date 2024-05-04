@@ -14,6 +14,9 @@ from server.settings import (
 )
 
 class AdminAuth(AuthenticationBackend):
+    '''
+    Авторизация в админ панеле
+    '''
 
     def __init__(self, secret_key: str, db: SessionLocal):
         self.db = db

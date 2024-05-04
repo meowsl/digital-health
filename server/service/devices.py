@@ -26,3 +26,28 @@ def create_device(db: Session, device: schemas.DeviceBase):
     db.commit()
     db.refresh(new_device)
     return new_device
+
+def get_user_devices(db: Session, user_id: int):
+    '''
+    Получение всех устройств пользователя
+    '''
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    return user.devices
+
+def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
+    '''
+    Добавление нового устройства для пользователя
+    '''
+    db_user = get_user(db, user_id=user_id)
+
+    for device_id in devices.device_id:
+        device = db.query(models.Device).filter(models.Device.id == device_id).first()
+        if not device:
+            raise HTTPException(status_code=404, detail="Device not found")
+
+        db_user.devices.append(device)
+
+    db.commit()
+    db.refresh(db_user)
+
+    return db_user

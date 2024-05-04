@@ -5,38 +5,31 @@ from fastapi import HTTPException
 from werkzeug.security import check_password_hash
 
 def get_user(db: Session, user_id: int):
+    '''
+    Получение пользователя по ID
+    '''
     return db.query(models.User).filter(models.User.id == user_id).first()
 
 def get_user_by_username(db: Session, username: str):
+    '''
+    Получение пользователя по логину
+    '''
     return db.query(models.User).filter(models.User.username == username).first()
 
 def create_user(db: Session, user: schemas.UserCreate):
-    db_user = models.User(username=user.username, email=user.email, password=user.password)
+    '''
+    Создание нового пользователя
+    '''
+    db_user = models.User(username=user.username, email=user.email, role=user.role, password=user.password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-def get_user_devices(db: Session, user_id: int):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    return user.devices
-
-def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
-    db_user = get_user(db, user_id=user_id)
-
-    for device_id in devices.device_id:
-        device = db.query(models.Device).filter(models.Device.id == device_id).first()
-        if not device:
-            raise HTTPException(status_code=404, detail="Device not found")
-
-        db_user.devices.append(device)
-
-    db.commit()
-    db.refresh(db_user)
-
-    return db_user
-
 def authenticate_user(db: Session, user: schemas.UserBase):
+    '''
+    Вспомогательная аутентификаци
+    '''
     db_user = get_user_by_username(db=db, username=user.username)
 
     if not db_user:
