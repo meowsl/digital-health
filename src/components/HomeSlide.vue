@@ -29,13 +29,15 @@
             >
             <p class="title-text text-h5 text-white q-ma-none q-ml-sm">Пульс</p>
           </q-card-section>
-          <q-card-section class="measurements-card__graph">
-            <p>Тут очень крутое красивое графико</p>
+          <q-card-section class="measurements-card__graph q-px-none">
+            <BarChart
+              :chart-data="chartData"
+              :options="chartOptions"
+            />
           </q-card-section>
           <q-card-section class="measurements-card__indicator row text-white items-center">
             <p class="number">74</p>
             <p class="system q-ml-sm">удара в секунду</p>
-
           </q-card-section>
         </q-card>
       </div>
@@ -66,8 +68,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import PulseIcon from 'images/measurements/pulse.svg'
+import { Chart, registerables } from 'chart.js';
+import { BarChart } from 'vue-chart-3';
 
 const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
@@ -84,5 +88,58 @@ const isToday = (index: number) => {
   const day = new Date(date.value);
   day.setDate(day.getDate() + index);
   return day.toDateString() === today.toDateString();
+};
+
+Chart.register(...registerables);
+
+const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;
+
+if (ctx) {
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      datasets: [{
+        label: 'Пульс',
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      },
+      indexAxis: 'y'
+    }
+  });
+}
+
+const chartData = computed(() => ({
+  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  datasets: [{
+    label: 'Пульс',
+    data: [12, 19, 3, 5, 2, 3],
+    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+    borderColor: 'rgba(255, 99, 132, 1)',
+    borderWidth: 1
+  }]
+}));
+
+const chartOptions = {
+  indexAxis: 'x',
+  scales: {
+    x: {
+      stacked: true
+    },
+    y: {
+      beginAtZero: true,
+      stacked: true,
+      offset: true
+    }
+  }
 };
 </script>
