@@ -1,0 +1,33 @@
+@charset 'UTF-8';
+
+// Inter
+@include font-face(
+  'Inter',
+  'Inter/Inter-Regular.ttf',
+  $weight: 400
+);
+
+@include font-face(
+  'Inter-Light',
+  'Inter/Inter-Light.ttf',
+  $weight: 300
+);
+
+@include font-face(
+  'Inter-Medium',
+  'Inter/Inter-Medium.ttf',
+  $weight: 500
+);
+
+@include font-face(
+  'Inter-Bold',
+  'Inter/Inter-Bold.ttf',
+  $weight: 700
+);
+
+@include font-face(
+  'Inter-SemiBold',
+  'Inter/Inter-SemiBold.ttf',
+  $weight: 600
+)
+

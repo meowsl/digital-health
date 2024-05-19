@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header class="header">
-      <q-toolbar class="header__toolbar">
+      <q-toolbar class="header__toolbar row justify-between q-pa-lg">
         <q-btn
           flat
           round
@@ -21,6 +21,6 @@
   </q-layout>
 </template>
 
-<script setup lang="ts">
-import Placeholder from "images/avatar_placeholder.png"
+<script setup lang='ts'>
+import Placeholder from 'images/avatar_placeholder.png'
 </script>
