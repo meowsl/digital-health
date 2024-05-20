@@ -1,5 +1,25 @@
 @charset 'UTF-8';
 
-.header{
+.header {
   background-color: transparent !important;
+}
+
+.menu {
+
+  &__card {
+    background-color: transparent !important;
+  }
+
+  &__nav-item {
+    color: #fff !important;
+  }
+}
+
+aside {
+  max-height: 47rem !important;
+  background-color: transparent !important;
+}
+
+.q-drawer__content {
+  border-radius: 0 50px 50px 50px;
 }

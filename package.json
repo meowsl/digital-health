@@ -16,6 +16,7 @@
     "@quasar/extras": "^1.16.4",
     "axios": "^1.6.8",
     "chart.js": "^4.4.3",
+    "mobile-detect": "^1.4.5",
     "primevue": "^3.52.0",
     "quasar": "^2.8.0",
     "vue": "^3.4.18",

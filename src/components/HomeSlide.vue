@@ -29,10 +29,12 @@
             >
             <p class="title-text text-h5 text-white q-ma-none q-ml-sm">Пульс</p>
           </q-card-section>
-          <q-card-section class="measurements-card__graph q-px-none">
-            <BarChart
+          <q-card-section class="measurements-card__graph q-pa-none">
+            <LineChart
               :chart-data="chartData"
               :options="chartOptions"
+              :height="150"
+              style="max-height: 150px;"
             />
           </q-card-section>
           <q-card-section class="measurements-card__indicator row text-white items-center">
@@ -68,10 +70,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import PulseIcon from 'images/measurements/pulse.svg'
 import { Chart, registerables } from 'chart.js';
-import { BarChart } from 'vue-chart-3';
+import { LineChart } from 'vue-chart-3';
 
 const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
@@ -92,36 +94,10 @@ const isToday = (index: number) => {
 
 Chart.register(...registerables);
 
-const ctx = document.getElementById('myChart') as HTMLCanvasElement | null;
-
-if (ctx) {
-  const chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-      datasets: [{
-        label: 'Пульс',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      },
-      indexAxis: 'y'
-    }
-  });
-}
-
 const chartData = computed(() => ({
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  labels: ['', '', '', '', '', ''],
   datasets: [{
-    label: 'Пульс',
+    label: '',
     data: [12, 19, 3, 5, 2, 3],
     backgroundColor: 'rgba(255, 99, 132, 0.2)',
     borderColor: 'rgba(255, 99, 132, 1)',
@@ -130,15 +106,10 @@ const chartData = computed(() => ({
 }));
 
 const chartOptions = {
-  indexAxis: 'x',
   scales: {
-    x: {
-      stacked: true
-    },
     y: {
       beginAtZero: true,
-      stacked: true,
-      offset: true
+
     }
   }
 };
