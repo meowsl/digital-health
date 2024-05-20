@@ -21,27 +21,10 @@
         </q-list>
       </div>
       <div class="col-12 home-slide__measurements q-mt-xl">
-        <q-card class="measurements-card">
-          <q-card-section class="measurements-card__title row items-center">
-            <img
-              class="title-icon"
-              :src="PulseIcon"
-            >
-            <p class="title-text text-h5 text-white q-ma-none q-ml-sm">Пульс</p>
-          </q-card-section>
-          <q-card-section class="measurements-card__graph q-pa-none">
-            <LineChart
-              :chart-data="chartData"
-              :options="chartOptions"
-              :height="150"
-              style="max-height: 150px;"
-            />
-          </q-card-section>
-          <q-card-section class="measurements-card__indicator row text-white items-center">
-            <p class="number">74</p>
-            <p class="system q-ml-sm">удара в секунду</p>
-          </q-card-section>
-        </q-card>
+        <MeasurementCard
+          bgColor="linear-gradient(180deg, rgba(135, 107, 154, 1) 0%, rgba(115, 79, 131, 1) 100%)"
+          text-color="white"
+        />
       </div>
       <div class="col-12 home-slide__notifications q-mt-xl">
         <div class="row">
@@ -71,9 +54,10 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import PulseIcon from 'images/measurements/pulse.svg'
-import { Chart, registerables } from 'chart.js';
-import { LineChart } from 'vue-chart-3';
+import MeasurementCard from './MeasurementCard.vue';
+// import PulseIcon from 'images/measurements/pulse.svg'
+// import { Chart, registerables } from 'chart.js';
+// import { LineChart } from 'vue-chart-3';
 
 const daysOfWeek = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
 
@@ -92,25 +76,25 @@ const isToday = (index: number) => {
   return day.toDateString() === today.toDateString();
 };
 
-Chart.register(...registerables);
+// Chart.register(...registerables);
 
-const chartData = computed(() => ({
-  labels: ['', '', '', '', '', ''],
-  datasets: [{
-    label: '',
-    data: [12, 19, 3, 5, 2, 3],
-    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    borderColor: 'rgba(255, 99, 132, 1)',
-    borderWidth: 1
-  }]
-}));
+// const chartData = computed(() => ({
+//   labels: ['', '', '', '', '', ''],
+//   datasets: [{
+//     label: '',
+//     data: [12, 19, 3, 5, 2, 3],
+//     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+//     borderColor: 'rgba(255, 99, 132, 1)',
+//     borderWidth: 1
+//   }]
+// }));
 
-const chartOptions = {
-  scales: {
-    y: {
-      beginAtZero: true,
+// const chartOptions = {
+//   scales: {
+//     y: {
+//       beginAtZero: true,
 
-    }
-  }
-};
+//     }
+//   }
+// };
 </script>

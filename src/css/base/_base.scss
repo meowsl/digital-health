@@ -1,12 +1,28 @@
 @charset 'UTF-8';
 
-.q-date__navigation{
+.q-date__navigation {
   display: none;
 }
 
-body{
+p {
+  margin: 0;
+}
+
+body {
   margin: 0;
   font-family: 'Inter' !important;
-  background: rgb(186,176,212);
-  background: linear-gradient(180deg, rgba(186,176,212,1) 0%, rgba(76,26,87,1) 100%);
+  background: rgb(186, 176, 212);
+  background: linear-gradient(180deg, rgba(186, 176, 212, 1) 0%, rgba(76, 26, 87, 1) 100%);
+}
+
+.q-body--prevent-scroll {
+  position: relative !important;
+}
+
+.q-tab-panels {
+  background-color: transparent !important;
+}
+
+.q-tab-panel {
+  padding-top: 0 !important;
 }

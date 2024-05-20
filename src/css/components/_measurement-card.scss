@@ -1,0 +1,33 @@
+.measurements-card {
+  border-radius: 23px;
+  max-height: 17rem;
+
+  &__title {
+    &>.title-text {
+      font-size: 15px;
+    }
+  }
+
+  &__indicator {
+
+    &>.number {
+      font-size: 20px;
+    }
+
+    &>.system {
+      font-family: 'Inter-Light';
+      font-size: 12px;
+    }
+  }
+}
+
+.dialog-card__title {
+  font-family: 'Inter-Light';
+  font-size: 30px;
+}
+
+.q-tab__label {
+  font-family: 'Inter-Light';
+  font-size: 30px;
+  text-transform: capitalize;
+}

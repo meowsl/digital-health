@@ -60,7 +60,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/measurements"
         >
           <q-avatar
             square
@@ -74,7 +74,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/symptoms"
         >
           <q-avatar
             square

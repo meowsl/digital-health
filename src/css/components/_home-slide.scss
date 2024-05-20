@@ -1,14 +1,15 @@
-.home-slide{
+.home-slide {
   width: 100vw;
   border-radius: 35px 35px 0 0;
 }
 
-.calendar{
-  &__weekday{
+.calendar {
+  &__weekday {
     color: #989898;
     font-size: 20px;
   }
-  &__dateday{
+
+  &__dateday {
     color: #6A6A6A;
     font-size: 23px;
     margin-top: 1rem !important;
@@ -21,53 +22,28 @@
   border-radius: 34px;
 }
 
-.q-item{
+.q-item {
   padding: 1rem 0.5rem;
 }
 
-.measurements-card{
-  background: rgb(135,107,154) !important;
-  background: linear-gradient(180deg, rgba(135,107,154,1) 0%, rgba(115,79,131,1) 100%) !important;
-  border-radius: 23px;
-
-  &__title{
-    &>.title-text{
-      font-size: 15px;
-    }
-  }
-
-  &__indicator{
-
-    &>.number{
-      font-size: 20px;
-    }
-
-    &>.system{
-      font-family: 'Inter-Light';
-      font-size: 12px;
-    }
-  }
-}
-
-.notifications-card{
+.notifications-card {
   background-color: #4C1A57;
   border-radius: 23px;
 
-  &__title{
+  &__title {
     font-family: 'Inter-Light';
     font-size: 15px;
   }
 
-  &__text{
+  &__text {
     font-family: 'Inter-Medium';
     font-size: 18px;
   }
 
-  &__link{
-    >.link{
+  &__link {
+    >.link {
       text-decoration: none !important;
       opacity: 0.7;
     }
   }
 }
-
