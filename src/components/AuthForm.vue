@@ -99,17 +99,28 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useAuthStore } from 'src/stores/auth'
 
-const username = ref<string>()
-const password = ref<string>()
-const email = ref<string>()
+const authStore = useAuthStore()
+
+const username = ref<string>('')
+const password = ref<string>('')
+const email = ref<string>('')
 
 const loginForm = ref<boolean>(true)
 const loadingBtn = ref<boolean>(false)
 
 const submitLogin = async () => {
   loadingBtn.value = true
-  console.log('placehold')
+  try {
+    await authStore.userLogin(username.value, password.value)
+  }
+  catch (error) {
+    console.log(error)
+  }
+  finally {
+    loadingBtn.value = false
+  }
 }
 
 const submitRegistration = async () => {

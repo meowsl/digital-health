@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('authStore', {
       await api
         .post('/user/login', {username, password})
         .then(e => {
-          const token = e.data.access
+          const token = e.data.data.access
           localStorage.setItem('token', token)
           this.router.push({name: 'IndexPage'})
         })
