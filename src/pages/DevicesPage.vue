@@ -1,9 +1,9 @@
 <template>
   <q-page class="row">
-    <DevelopmentStage />
+    <DevicesList />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import DevelopmentStage from 'src/components/DevelopmentStage.vue';
+import DevicesList from 'src/components/DevicesList.vue';
 </script>

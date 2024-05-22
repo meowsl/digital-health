@@ -34,14 +34,15 @@ def create_device(db: Session, device: schemas.DeviceBase):
     db.refresh(new_device)
     return new_device
 
-# <-- TODO: fix user_devices -->
-
 def get_user_devices(db: Session, user_id: int):
     '''
     Получение всех устройств пользователя
     '''
-    user = db.query(models.user_device_table).filter(models.user_device_table.user_id == user_id).all()
-    print(user)
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
     return user.devices
 
 def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
@@ -55,7 +56,15 @@ def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
         if not device:
             raise HTTPException(status_code=404, detail="Device not found")
 
-        db_user.devices.append(device)
+        # Проверяем, является ли устройство принадлежностью пользователя
+        existing_relation = db.query(models.user_device_table).filter(
+            models.user_device_table.c.user_id == user_id,
+            models.user_device_table.c.device_id == device_id
+        ).first()
+
+        if not existing_relation:
+            # Добавляем устройство для пользователя, если оно еще не добавлено
+            db_user.devices.append(device)
 
     db.commit()
     db.refresh(db_user)

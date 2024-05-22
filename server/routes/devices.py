@@ -3,6 +3,7 @@ from fastapi import (
     HTTPException,
     Depends
 )
+from fastapi.responses import JSONResponse
 from server.settings import (
     SessionLocal,
     get_db
@@ -39,7 +40,7 @@ async def get_device(device_id: int, db: SessionLocal = Depends(get_db)):
     '''
     return service.get_device_by_id(id=device_id, db=db)
 
-@devices_router.get("/{user_id}", summary="Get all devices for user")
+@devices_router.get("/user/{user_id}", summary="Get all devices for user")
 async def get_devices(user_id: int, db: SessionLocal = Depends(get_db)):
     '''
     Получение устройств определенного пользователя
@@ -52,7 +53,7 @@ async def get_devices(user_id: int, db: SessionLocal = Depends(get_db)):
     print("here")
     return service.get_user_devices(db=db, user_id=user_id)
 
-@devices_router.post("/{user_id}", summary="Add new device to user")
+@devices_router.post("/user/{user_id}", summary="Add new device to user")
 async def add_devices(user_id: int, devices: schemas.UserDevices, db: SessionLocal = Depends(get_db)):
     '''
     Добавление устройства для пользователя
@@ -62,4 +63,12 @@ async def add_devices(user_id: int, devices: schemas.UserDevices, db: SessionLoc
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    return service.add_user_devices(db=db, user_id=user_id, devices=devices)
+    new_user_device = service.add_user_devices(db=db, user_id=user_id, devices=devices)
+
+    return JSONResponse(status_code=200, content={
+        "message":"success",
+        "data":{
+            "user_id": user_id,
+            "new_devices": devices.device_id
+        }
+    })
