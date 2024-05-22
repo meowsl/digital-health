@@ -1,0 +1,22 @@
+.calendar {
+  &__weekday {
+    color: #989898;
+    font-size: 20px;
+  }
+
+  &__dateday {
+    color: #6A6A6A;
+    font-size: 23px;
+    margin-top: 1rem !important;
+  }
+}
+
+.active-day {
+  background-color: #CAC4DA;
+  color: white;
+  border-radius: 34px;
+}
+
+.q-item {
+  padding: 1rem 0.5rem;
+}

@@ -37,6 +37,7 @@
     class="dialog"
     v-model="showDialog"
     position="bottom"
+    :persistent="false"
   >
     <q-card
       class="dialog-card justify-center"
@@ -118,9 +119,6 @@
             <DialogCard />
           </q-tab-panel>
         </q-tab-panels>
-      </q-card-section>
-      <q-card-section>
-
       </q-card-section>
     </q-card>
   </q-dialog>

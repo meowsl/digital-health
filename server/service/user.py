@@ -16,6 +16,12 @@ def get_user_by_username(db: Session, username: str):
     '''
     return db.query(models.User).filter(models.User.username == username).first()
 
+def get_user_by_email(db: Session, email: str):
+    '''
+    Получение пользователя по почте
+    '''
+    return db.query(models.User).filter(models.User.email == email).first()
+
 def create_user(db: Session, user: schemas.UserCreate):
     '''
     Создание нового пользователя
@@ -33,9 +39,9 @@ def authenticate_user(db: Session, user: schemas.UserBase):
     db_user = get_user_by_username(db=db, username=user.username)
 
     if not db_user:
-        raise HTTPException(status_code=401, detail="User doesnt exist")
+        raise HTTPException(status_code=401, detail="Такого пользователя не существует!")
 
     if not check_password_hash(db_user.password, user.password):
-        raise HTTPException(status_code=401, detail="Incorrect password")
+        raise HTTPException(status_code=401, detail="Неверные данные")
 
     return db_user

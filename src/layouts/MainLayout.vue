@@ -88,7 +88,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/activity"
         >
           <q-avatar
             square
@@ -102,7 +102,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/devices"
         >
           <q-avatar
             square
@@ -116,7 +116,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/family"
         >
           <q-avatar
             square
@@ -130,7 +130,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/documents"
         >
           <q-avatar
             square
@@ -144,7 +144,7 @@
           class="menu__nav-item"
           clickable
           v-ripple
-          to="/"
+          to="/settings"
         >
           <q-avatar
             square
