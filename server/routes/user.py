@@ -29,11 +29,12 @@ async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db))
     if db_user_email:
         raise HTTPException(status_code=400, detail="Пользователь с такой почтой уже существует!")
 
-    service.create_user(db=db, user=user)
+    new_user = service.create_user(db=db, user=user)
 
     return JSONResponse(status_code=200, content={
         "message":"Success",
         "data": {
+            "id": new_user.id,
             "username": user.username,
             "email": user.email
         }
@@ -54,11 +55,26 @@ async def login(user: schemas.UserBase, db: SessionLocal = Depends(get_db)):
         data={"sub": db_user.username}, expires_delta=access_token_expires
     )
 
+    user_info = service.get_user_by_username(username=user.username, db=db)
+
+    user_dict = user_info.__dict__
+    del user_dict['_sa_instance_state']
+    del user_dict['password']
+
     return JSONResponse(status_code=200, content={
         "message": "Success",
         "data": {
             "access" : access_token,
             "token_type": "Bearer",
+            "firstname": user_dict["firstname"],
+            "lastname": user_dict["lastname"]
             }
         }
     )
+
+@user_router.get("/{username}", summary="Get user information")
+async def index(username: str, db: SessionLocal = Depends(get_db)):
+    '''
+    Информация о пользователе
+    '''
+    db_user = service.get_user_by_username(username=username, db=db)

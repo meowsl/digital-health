@@ -33,7 +33,7 @@
           <q-avatar size="60px">
             <img :src="Placeholder">
           </q-avatar>
-          <p class="text-h5 q-ml-sm q-mb-none">Иван Ив.</p>
+          <p class="text-h5 q-ml-sm q-mb-none">{{ firstname }} {{ lastname?.substring(0, 2) }}.</p>
         </q-card-section>
       </q-card>
       <q-separator
@@ -171,7 +171,8 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
+import { useAuthStore } from 'src/stores/auth'
 import Placeholder from 'images/avatar_placeholder.png'
 import NotifyIcon from 'images/menu/notifications.svg'
 import MeasureIcon from 'images/menu/measurements.svg'
@@ -181,16 +182,41 @@ import DevicesIcon from 'images/menu/devices.svg'
 import FamilyIcon from 'images/menu/family.svg'
 import DocsIcon from 'images/menu/documents.svg'
 import SettingsIcon from 'images/menu/settings.svg'
+import NoMobile from 'src/components/NoMobile.vue'
+import { Notify } from 'quasar'
 
-import NoMobile from 'src/components/NoMobile.vue';
+const authStore = useAuthStore()
 
 const mediaIsPhone = ref<boolean>()
 const drawer = ref(false)
+
+const firstname = ref<string>()
+const lastname = ref<string>()
 
 onMounted(() => {
   const mediaQuery = window.matchMedia('(max-width: 480px)');
   mediaQuery.addListener((event) => {
     mediaIsPhone.value = event.matches
   });
+  const firstnameFromStorage = localStorage.getItem('firstname')
+  const lastnameFromStorage = localStorage.getItem('lastname')
+  const token = localStorage.getItem('token')
+  if (firstnameFromStorage !== null && lastnameFromStorage !== null && token !== null) {
+    firstname.value = firstnameFromStorage
+    lastname.value = lastnameFromStorage
+    authStore.user = {
+      id: undefined,
+      firstName: firstnameFromStorage,
+      lastName: lastnameFromStorage
+    }
+  } else {
+    authStore.userLogout()
+    Notify.create({
+      color: 'negative',
+      message: 'Пожалуйста, авторизуйтесь снова!',
+      position: 'top'
+    })
+  }
+
 })
 </script>

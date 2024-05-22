@@ -135,6 +135,9 @@ const submitLogin = async () => {
   loadingBtn.value = true
   try {
     await authStore.userLogin(username.value, password.value)
+      .then(e => {
+        console.log(authStore.user?.firstName)
+      })
   }
   catch (error) {
     console.log(error)

@@ -29,6 +29,7 @@ async def post_devices(device: schemas.DeviceBase, db: SessionLocal = Depends(ge
     if device_check:
         return HTTPException(status_code=500, detail="Device already exist")
 
+
     return service.create_device(db=db, device=device)
 
 @devices_router.get("/{user_id}", summary="Get all devices for user")

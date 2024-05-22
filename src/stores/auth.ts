@@ -18,6 +18,10 @@ export const useAuthStore = defineStore('authStore', {
           const token = e.data.data.access
           localStorage.setItem('token', token)
           this.router.push({ name: 'IndexPage' })
+          if (this.user && e.data.data.firstname && e.data.data.lastname) {
+            localStorage.setItem('firstname', e.data.data.firstname)
+            localStorage.setItem('lastname', e.data.data.lastname)
+          }
         })
         .catch(e => {
           if (e.status === 401) {
@@ -25,9 +29,12 @@ export const useAuthStore = defineStore('authStore', {
             alert('Invalid username or password')
           }
         })
-    },
+    }
+    ,
     async userLogout() {
       localStorage.removeItem('token')
+      localStorage.removeItem('firstname')
+      localStorage.removeItem('lastname')
       this.router.push({ name: 'AuthPage' })
     },
     clear() {

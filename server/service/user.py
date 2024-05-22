@@ -39,7 +39,7 @@ def create_user(db: Session, user: schemas.UserCreate):
     '''
     Создание нового пользователя
     '''
-    db_user = models.User(username=user.username, email=user.email, role=user.role, password=user.password)
+    db_user = models.User(username=user.username, email=user.email, role=user.role, password=user.password, firstname=user.firstname, lastname=user.lastname)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
