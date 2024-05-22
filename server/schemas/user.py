@@ -7,6 +7,8 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     email: str
+    firstname: str
+    lastname: str
     role: str
 
 class UserDevices(BaseModel):

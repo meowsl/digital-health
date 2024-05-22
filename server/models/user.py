@@ -23,6 +23,10 @@ class User(Base):
     email: Mapped[str] = Column(String(128), unique=True, info={"label":"Электронная почта"})
     role: Mapped[str] = Column(String(32), info={"label":"Роль"})
 
+    firstname: Mapped[str] = Column(String(64), info={"label":"Имя"})
+    lastname: Mapped[str] = Column(String(64), info={"label":"Фамилия"})
+    midname: Mapped[str] = Column(String(64), nullable=True, info={"label":"Отчество"})
+
     devices = relationship("Device", secondary=user_device_table, back_populates="users")
     measurements = relationship("Measurement", back_populates="user")
 

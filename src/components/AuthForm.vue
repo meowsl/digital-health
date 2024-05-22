@@ -18,7 +18,7 @@
       class="auth-form__input q-pb-lg"
       v-model="password"
       standout
-      type="text"
+      type="password"
       placeholder="Пароль"
       lazy-rules
       :rules="[val => !!val || 'Обязательное поле']"
@@ -51,6 +51,24 @@
     <p class="auth-form__title text-center q-pb-lg text-h5">Регистрация</p>
     <q-input
       class="auth-form__input q-pb-lg"
+      v-model="firstname"
+      standout
+      type="text"
+      placeholder="Имя"
+      lazy-rules
+      :rules="[val => !!val || 'Обязательное поле']"
+    />
+    <q-input
+      class="auth-form__input q-pb-lg"
+      v-model="lastname"
+      standout
+      type="text"
+      placeholder="Фамилия"
+      lazy-rules
+      :rules="[val => !!val || 'Обязательное поле']"
+    />
+    <q-input
+      class="auth-form__input q-pb-lg"
       v-model="username"
       standout
       type="text"
@@ -71,7 +89,7 @@
       class="auth-form__input q-pb-lg"
       v-model="password"
       standout
-      type="text"
+      type="password"
       placeholder="Пароль"
       lazy-rules
       :rules="[val => !!val || 'Обязательное поле']"
@@ -100,12 +118,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from 'src/stores/auth'
+import { Notify } from 'quasar'
 
 const authStore = useAuthStore()
 
 const username = ref<string>('')
 const password = ref<string>('')
 const email = ref<string>('')
+const firstname = ref<string>('')
+const lastname = ref<string>('')
 
 const loginForm = ref<boolean>(true)
 const loadingBtn = ref<boolean>(false)
@@ -125,6 +146,38 @@ const submitLogin = async () => {
 
 const submitRegistration = async () => {
   loadingBtn.value = true
-  console.log('placehold')
+  const data = {
+    "firstname": firstname.value,
+    "lastname": lastname.value,
+    "email": email.value,
+    "username": username.value,
+    "password": password.value,
+    "role": "user"
+  }
+  try {
+    await authStore.userRegistration(data)
+      .then(e => {
+        Notify.create({
+          color: 'positive',
+          message: 'Успешная регистрация!',
+          position: 'top'
+        })
+        loginForm.value = true
+      })
+      .catch(e => {
+        console.log(e)
+        Notify.create({
+          color: 'negative',
+          message: 'Ошибка регистрации!',
+          position: 'top'
+        })
+      })
+  }
+  catch (error) {
+    console.log(error)
+  }
+  finally {
+    loadingBtn.value = false
+  }
 }
 </script>

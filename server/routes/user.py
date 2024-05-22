@@ -31,7 +31,13 @@ async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db))
 
     service.create_user(db=db, user=user)
 
-    return HTTPException(status_code=200, detail="User create")
+    return JSONResponse(status_code=200, content={
+        "message":"Success",
+        "data": {
+            "username": user.username,
+            "email": user.email
+        }
+    })
 
 @user_router.post("/login", summary="User authorization")
 async def login(user: schemas.UserBase, db: SessionLocal = Depends(get_db)):
@@ -52,7 +58,7 @@ async def login(user: schemas.UserBase, db: SessionLocal = Depends(get_db)):
         "message": "Success",
         "data": {
             "access" : access_token,
-            "token_type": "bearer"
+            "token_type": "Bearer",
             }
         }
     )

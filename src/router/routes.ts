@@ -5,21 +5,21 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/measurements', component: () => import('pages/MeasurementsPage.vue'), },
-      { path: '/symptoms', component: () => import('pages/SymptomsPage.vue') },
-      { path: '/activity', component: () => import('pages/ActivityPage.vue') },
-      { path: '/devices', component: () => import('pages/DevicesPage.vue') },
-      { path: '/family', component: () => import('pages/FamilyPage.vue') },
-      { path: '/documents', component: () => import('pages/DocumentsPage.vue') },
-      { path: '/settings', component: () => import('pages/SettingsPage.vue') }
+      { path: '', name: 'IndexPage', component: () => import('pages/IndexPage.vue') },
+      { path: '/measurements', name: 'MeasurementsPage', component: () => import('pages/MeasurementsPage.vue'), },
+      { path: '/symptoms', name: 'SymptomsPage', component: () => import('pages/SymptomsPage.vue') },
+      { path: '/activity', name: 'ActivityPage', component: () => import('pages/ActivityPage.vue') },
+      { path: '/devices', name: 'DevicesPage', component: () => import('pages/DevicesPage.vue') },
+      { path: '/family', name: 'FamilyPage', component: () => import('pages/FamilyPage.vue') },
+      { path: '/documents', name: 'DocumentsPage', component: () => import('pages/DocumentsPage.vue') },
+      { path: '/settings', name: 'SettingsPage', component: () => import('pages/SettingsPage.vue') }
     ],
   },
   {
     path: '/auth',
     component: () => import('layouts/UnauthLayout.vue'),
     children: [
-      { path: '/auth', component: () => import('pages/AuthPage.vue') }
+      { path: '/auth', name: 'AuthPage', component: () => import('pages/AuthPage.vue') }
     ]
   },
 
