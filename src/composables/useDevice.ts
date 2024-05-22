@@ -9,7 +9,13 @@ export function useDevice() {
     return api.get<Device[]>('devices')
   }
 
+  const getDevice = (id: number) => {
+    return api.get<Device>(`devices/${id}`)
+  }
+
+
   return {
-    getDeviceList
+    getDeviceList,
+    getDevice,
   }
 }

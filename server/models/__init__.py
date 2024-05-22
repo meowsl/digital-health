@@ -4,3 +4,4 @@ from server.models.devices import (
     DeviceData
 )
 from server.models.measurement import Measurement
+from server.models.association_table import user_device_table

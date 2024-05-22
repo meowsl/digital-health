@@ -32,6 +32,13 @@ async def post_devices(device: schemas.DeviceBase, db: SessionLocal = Depends(ge
 
     return service.create_device(db=db, device=device)
 
+@devices_router.get("/{device_id}", summary="Get single device")
+async def get_device(device_id: int, db: SessionLocal = Depends(get_db)):
+    '''
+    Получение одного девайса
+    '''
+    return service.get_device_by_id(id=device_id, db=db)
+
 @devices_router.get("/{user_id}", summary="Get all devices for user")
 async def get_devices(user_id: int, db: SessionLocal = Depends(get_db)):
     '''
@@ -42,6 +49,7 @@ async def get_devices(user_id: int, db: SessionLocal = Depends(get_db)):
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    print("here")
     return service.get_user_devices(db=db, user_id=user_id)
 
 @devices_router.post("/{user_id}", summary="Add new device to user")

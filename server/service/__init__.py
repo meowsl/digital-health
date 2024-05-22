@@ -8,6 +8,7 @@ from server.service.user import (
 )
 from server.service.devices import (
     get_device_list,
+    get_device_by_id,
     get_device_by_name,
     create_device,
     get_user_devices,
