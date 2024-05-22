@@ -64,7 +64,7 @@ module.exports = configure(function (/* ctx */) {
                 models: path.join(__dirname, './src/models/index.ts'),
                 composables: path.join(__dirname, './src/composables/index.ts'),
                 images: path.join(__dirname, './src/assets/images'),
-              },
+            },
             // sourceFiles: './client',
 
             // vueRouterBase,
@@ -115,7 +115,7 @@ module.exports = configure(function (/* ctx */) {
             // directives: [],
 
             // Quasar plugins
-            plugins: []
+            plugins: ['Notify']
         },
 
         // animations: 'all', // --- includes all animations
