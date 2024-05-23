@@ -14,6 +14,7 @@ const firstname = ref<string>()
 
 onMounted(() => {
   firstname.value = authStore.user?.firstName
+  console.log(firstname.value)
 })
 
 </script>

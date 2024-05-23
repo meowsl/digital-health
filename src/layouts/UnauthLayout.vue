@@ -26,6 +26,7 @@ const mediaIsPhone = ref<boolean>()
 
 onMounted(() => {
   const mediaQuery = window.matchMedia('(max-width: 480px)');
+  mediaIsPhone.value = mediaQuery.matches;
   mediaQuery.addListener((event) => {
     mediaIsPhone.value = event.matches
   });

@@ -2,6 +2,8 @@ export interface User {
   id: number | undefined
   firstName: string | undefined
   lastName: string | undefined
+  username: string | undefined
+  email: string | undefined
 }
 
 export interface AuthState {

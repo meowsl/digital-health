@@ -14,6 +14,16 @@ class UserCreate(UserBase):
 class UserDevices(BaseModel):
     device_id: List[int]
 
+class UserPublic(BaseModel):
+    id: int
+    username: str
+    email: str
+    firstname: str
+    lastname: str
+
+    class Config:
+        from_attributes = True
+
 class User(BaseModel):
     id: int
     username: str
@@ -21,6 +31,7 @@ class User(BaseModel):
     role: str
     firstname: str
     lastname: str
+
 
     class Config:
         from_attributes = True

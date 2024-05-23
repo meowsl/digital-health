@@ -9,7 +9,7 @@
   >
     <q-item-section class="col justify-center">
       <q-item-label
-        class="calendar__weekday"
+        class="calendar__weekday text-center"
         :style="getWeekdayStyles"
       >{{ day }}</q-item-label>
       <q-item-label

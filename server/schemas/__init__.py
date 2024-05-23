@@ -2,7 +2,8 @@ from server.schemas.user import (
     User,
     UserCreate,
     UserDevices,
-    UserBase
+    UserBase,
+    UserPublic
 )
 from server.schemas.devices import (
     Device,

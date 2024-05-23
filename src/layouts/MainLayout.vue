@@ -173,6 +173,8 @@
 <script setup lang='ts'>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
+import { Notify } from 'quasar'
+import { useUser } from 'src/composables/useAuth'
 import Placeholder from 'images/avatar_placeholder.png'
 import NotifyIcon from 'images/menu/notifications.svg'
 import MeasureIcon from 'images/menu/measurements.svg'
@@ -183,31 +185,33 @@ import FamilyIcon from 'images/menu/family.svg'
 import DocsIcon from 'images/menu/documents.svg'
 import SettingsIcon from 'images/menu/settings.svg'
 import NoMobile from 'src/components/NoMobile.vue'
-import { Notify } from 'quasar'
+
 
 const authStore = useAuthStore()
+const { getUserInfo } = useUser()
 
-const mediaIsPhone = ref<boolean>()
+const mediaIsPhone = ref<boolean>(false)
 const drawer = ref(false)
 
 const firstname = ref<string>()
 const lastname = ref<string>()
 
-onMounted(() => {
+onMounted(async () => {
   const mediaQuery = window.matchMedia('(max-width: 480px)');
+  mediaIsPhone.value = mediaQuery.matches;
   mediaQuery.addListener((event) => {
     mediaIsPhone.value = event.matches
   });
-  const firstnameFromStorage = localStorage.getItem('firstname')
-  const lastnameFromStorage = localStorage.getItem('lastname')
+  const userIdFromStorage = localStorage.getItem('userId')
   const token = localStorage.getItem('token')
-  if (firstnameFromStorage !== null && lastnameFromStorage !== null && token !== null) {
-    firstname.value = firstnameFromStorage
-    lastname.value = lastnameFromStorage
+  if (userIdFromStorage !== null && token !== null) {
+    const dataUser = await getUserInfo(Number(userIdFromStorage))
     authStore.user = {
-      id: undefined,
-      firstName: firstnameFromStorage,
-      lastName: lastnameFromStorage
+      id: dataUser.data.id,
+      firstName: dataUser.data.firstName,
+      lastName: dataUser.data.lastName,
+      username: dataUser.data.username,
+      email: dataUser.data.email
     }
   } else {
     authStore.userLogout()

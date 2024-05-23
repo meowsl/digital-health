@@ -66,15 +66,18 @@ async def login(user: schemas.UserBase, db: SessionLocal = Depends(get_db)):
         "data": {
             "access" : access_token,
             "token_type": "Bearer",
-            "firstname": user_dict["firstname"],
-            "lastname": user_dict["lastname"]
+            "user_id": user_dict["id"]
             }
         }
     )
 
-@user_router.get("/{username}", summary="Get user information")
-async def index(username: str, db: SessionLocal = Depends(get_db)):
+@user_router.get("/{user_id}", summary="Get user information")
+async def index(user_id: str, db: SessionLocal = Depends(get_db)):
     '''
     Информация о пользователе
     '''
-    db_user = service.get_user_by_username(username=username, db=db)
+    db_user = service.get_user(user_id=user_id, db=db)
+
+    user_public = schemas.UserPublic.from_orm(db_user)
+
+    return user_public
