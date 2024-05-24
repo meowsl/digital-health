@@ -13,7 +13,7 @@ export function useDevice() {
     return api.get<Device>(`devices/${device_id}`)
   }
 
-  const getUserDeviceList = (user_id: number) =>{
+  const getUserDevice = (user_id: number) =>{
     return api.get(`devices/user/${user_id}`)
   }
 
@@ -24,7 +24,7 @@ export function useDevice() {
   return {
     getDeviceList,
     getDevice,
-    getUserDeviceList,
-    asignUserDevice
+    asignUserDevice,
+    getUserDevice
   }
 }
