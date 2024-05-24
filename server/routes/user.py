@@ -15,7 +15,7 @@ from server.settings.config import ACCESS_TOKEN_EXPIRE_MINUTES
 
 user_router = APIRouter(prefix="/user", tags=["Authentication"])
 
-@user_router.post("/register", summary="Registering a new user")
+@user_router.post("/register", summary="Register a new user")
 async def register(user: schemas.UserCreate, db: SessionLocal = Depends(get_db)):
     '''
     Регистрация пользователя

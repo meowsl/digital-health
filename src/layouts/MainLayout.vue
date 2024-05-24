@@ -173,8 +173,8 @@
 <script setup lang='ts'>
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
-import { Notify } from 'quasar'
 import { useUser } from 'src/composables/useAuth'
+import { Notify } from 'quasar'
 import Placeholder from 'images/avatar_placeholder.png'
 import NotifyIcon from 'images/menu/notifications.svg'
 import MeasureIcon from 'images/menu/measurements.svg'
@@ -186,15 +186,14 @@ import DocsIcon from 'images/menu/documents.svg'
 import SettingsIcon from 'images/menu/settings.svg'
 import NoMobile from 'src/components/NoMobile.vue'
 
-
 const authStore = useAuthStore()
 const { getUserInfo } = useUser()
 
+const firstname = ref()
+const lastname = ref()
+
 const mediaIsPhone = ref<boolean>(false)
 const drawer = ref(false)
-
-const firstname = ref<string>()
-const lastname = ref<string>()
 
 onMounted(async () => {
   const mediaQuery = window.matchMedia('(max-width: 480px)');
@@ -206,13 +205,15 @@ onMounted(async () => {
   const token = localStorage.getItem('token')
   if (userIdFromStorage !== null && token !== null) {
     const dataUser = await getUserInfo(Number(userIdFromStorage))
-    authStore.user = {
+    authStore.setUser({
       id: dataUser.data.id,
-      firstName: dataUser.data.firstName,
-      lastName: dataUser.data.lastName,
+      firstName: dataUser.data.firstname,
+      lastName: dataUser.data.lastname,
       username: dataUser.data.username,
       email: dataUser.data.email
-    }
+    })
+    firstname.value = dataUser.data.firstname
+    lastname.value = dataUser.data.lastname
   } else {
     authStore.userLogout()
     Notify.create({
@@ -221,6 +222,5 @@ onMounted(async () => {
       position: 'top'
     })
   }
-
 })
 </script>

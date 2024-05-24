@@ -5,20 +5,20 @@
   >
     <div class="row q-pa-lg">
       <div class="col-12">
-        <p class="text-white text-left text-h5 q-pb-lg">Симптомы</p>
+        <p class="text-white text-left text-h5 q-pb-lg q-px-md">Симптомы</p>
         <div class="row justify-between">
           <CalendarRow theme="symptom" />
         </div>
       </div>
-      <div class="col-12 symptom-list__feeling q-mt-xl">
+      <div class="col-12 column items-center symptom-list__feeling q-mt-xl">
         <p class="feeling-title text-center text-h6 text-white">Оцените свое самочувствие</p>
         <q-rating
           class="q-mt-sm"
           v-model="feelingModel"
           size="3.5em"
-          :max="1"
-          color="deep-purple-9"
-          :icon="getIcon"
+          :max="5"
+          color="white"
+          :icon="icons"
         />
       </div>
     </div>
@@ -43,30 +43,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import CalendarRow from './CalendarRow.vue'
-import { biEmojiFrown, biEmojiNeutral } from '@quasar/extras/bootstrap-icons'
 
 const feelingModel = ref<number>(5)
 
-// const icons = ref([
-//   biBugFill,
-//   // Icon2,
-//   // Icon3,
-//   // Icon4,
-//   // Icon5,
-//   // Icon6,
-//   // Icon7,
-//   // Icon8,
-//   // Icon9,
-//   // HappyFace
-// ])
-
-const getIcon = computed(() => {
-  if (feelingModel.value <= 1) {
-    return biEmojiFrown
-  } else if (feelingModel.value === 2 || feelingModel.value === 3) {
-    return biEmojiNeutral
-  }
-})
+const icons = ref([
+  'sentiment_very_dissatisfied',
+  'sentiment_dissatisfied',
+  'sentiment_neutral',
+  'sentiment_satisfied',
+  'sentiment_very_satisfied'
+])
 
 const addSymptom = () => {
   // реализация добавления симптома

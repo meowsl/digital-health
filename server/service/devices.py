@@ -56,14 +56,12 @@ def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
         if not device:
             raise HTTPException(status_code=404, detail="Device not found")
 
-        # Проверяем, является ли устройство принадлежностью пользователя
         existing_relation = db.query(models.user_device_table).filter(
             models.user_device_table.c.user_id == user_id,
             models.user_device_table.c.device_id == device_id
         ).first()
 
         if not existing_relation:
-            # Добавляем устройство для пользователя, если оно еще не добавлено
             db_user.devices.append(device)
 
     db.commit()

@@ -10,7 +10,7 @@ export const getAuthToken = () => {
 export function useUser() {
 
   const getUserInfo = (id: number) => {
-    return api.get<User>(`user/${id}`)
+    return api.get(`user/${id}`)
   }
 
   return {
