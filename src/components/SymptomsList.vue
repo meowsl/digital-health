@@ -10,26 +10,16 @@
           <CalendarRow theme="symptom" />
         </div>
       </div>
-      <div class="col-12 symptom-list__feeling">
-        <p class="feeling-title">Оцените свое самочувствие</p>
+      <div class="col-12 symptom-list__feeling q-mt-xl">
+        <p class="feeling-title text-center text-h6 text-white">Оцените свое самочувствие</p>
         <q-rating
+          class="q-mt-sm"
           v-model="feelingModel"
           size="3.5em"
-          :max="10"
+          :max="1"
           color="deep-purple-9"
-        >
-          <template v-slot:left-icon>
-            <q-icon :name="icons[0]" />
-          </template>
-          <template v-slot:right-icon>
-            <q-icon :name="icons[1]" />
-          </template>
-          <template v-slot:label="{ index }">
-            <div v-if="index > 1 && index < 10">
-              {{ index }}
-            </div>
-          </template>
-        </q-rating>
+          :icon="getIcon"
+        />
       </div>
     </div>
     <div class="symptom-list__tooltip">Добавить симптом</div>
@@ -51,19 +41,32 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import CalendarRow from './CalendarRow.vue'
-import {
-  mdiEmoticonSadOutline,
-  mdiEmoticonHappyOutline
-} from '@quasar/extras/mdi-v6'
+import { biEmojiFrown, biEmojiNeutral } from '@quasar/extras/bootstrap-icons'
 
 const feelingModel = ref<number>(5)
 
-const icons = ref([
-  mdiEmoticonSadOutline,
-  mdiEmoticonHappyOutline
-])
+// const icons = ref([
+//   biBugFill,
+//   // Icon2,
+//   // Icon3,
+//   // Icon4,
+//   // Icon5,
+//   // Icon6,
+//   // Icon7,
+//   // Icon8,
+//   // Icon9,
+//   // HappyFace
+// ])
+
+const getIcon = computed(() => {
+  if (feelingModel.value <= 1) {
+    return biEmojiFrown
+  } else if (feelingModel.value === 2 || feelingModel.value === 3) {
+    return biEmojiNeutral
+  }
+})
 
 const addSymptom = () => {
   // реализация добавления симптома
