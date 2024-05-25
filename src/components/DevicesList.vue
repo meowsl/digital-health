@@ -1,31 +1,46 @@
 <template>
-  <div
-    class="device-list"
-    style="width: 100%;"
-  >
+  <div class="device-list">
     <div class="row q-pa-lg">
       <div class="col-12">
-        <p class="text-white text-left text-h5 q-pb-lg q-px-md">Устройства</p>
+        <p class="device-list__title text-white text-left text-h5 q-pb-lg q-px-md">Устройства</p>
       </div>
       <div
-        class="col-12 text-white text-h6"
+        class="col-12 text-white text-h6 q-px-md"
         v-if="!userDevices || userDevices.length === 0"
       >
         <p>Доступные устройства не найдены</p>
       </div>
       <div
-        class="col-6 q-px-md q-mt-md"
+        class="device-list__devices col-6 q-px-md q-mt-md"
         v-else
         v-for="userDevice in userDevices"
         :key="userDevice?.id"
       >
+        <div class="control-buttons column">
+          <!-- <q-btn
+            class="edit-btn"
+            round
+            color="yellow-14"
+            icon="edit"
+            size="sm"
+            @click="console.log('click')"
+          /> -->
+          <q-btn
+            class="remove-btn"
+            round
+            color="red"
+            icon="delete"
+            size="sm"
+            @click="deleteDevice(userDevice.id)"
+          />
+        </div>
         <q-card class="column items-center">
           <q-card-section class="q-py-sm">
             <q-avatar size="40px">
               <img :src="GeneralDevice">
             </q-avatar>
           </q-card-section>
-          <q-card-section class="row items-center">
+          <q-card-section class="row items-center q-pt-sm">
             <p class="text-body1">{{ userDevice.name }}</p>
           </q-card-section>
         </q-card>
@@ -51,12 +66,11 @@
       position="bottom"
       :persistent="false"
     >
-      <q-list style="border-radius: 50px 50px 0 0; background-color: rgba(73, 42, 79, 15%); background-color: #D6D0E8;">
-        <q-item class="device-dialog__title text-h5 text-white justify-center">Добавить устройство</q-item>
+      <q-list class="device-dialog__list">
+        <q-item class="title text-h5 text-white justify-center">Добавить устройство</q-item>
         <q-item
-          class="q-px-xl"
-          style="padding-top: 0; width: auto;"
-          v-for="device in listDevices"
+          class="device q-px-xl"
+          v-for="device in listDevicesWithoutUserDevices"
           :key="device.id"
         >
           <q-item-section class="row q-px-xl">
@@ -85,19 +99,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useDevice } from 'src/composables/useDevice'
 import { Device } from 'src/models'
 import { Notify } from 'quasar'
 import GeneralDevice from 'images/general_device.svg'
 
-const { getDeviceList, getUserDevice, asignUserDevice } = useDevice()
+const { getDeviceList, getUserDevice, asignUserDevice, removeUserDevice } = useDevice()
 
 const userDevices = ref<Device[]>()
 const listDevices = ref<Device[]>()
 
 const showDialog = ref<boolean>(false)
 const user_id = ref<number>()
+
+const deleteDevice = async (device_id: number | string | undefined) => {
+  await removeUserDevice(user_id.value, device_id)
+    .then(() => {
+      Notify.create({
+        color: 'positive',
+        message: 'Устройство успешно удалено!',
+        position: 'top'
+      })
+      if (userDevices.value) {
+        userDevices.value = userDevices.value.filter(device => device.id !== device_id);
+      }
+    })
+    .catch((error) => {
+      Notify.create({
+        color: 'negative',
+        message: 'Произошла ошибка, попробуйте позже!',
+        position: 'top'
+      })
+      console.error(error)
+    })
+}
 
 const addDevice = async (device_id: number | string | undefined) => {
   const device_data = {
@@ -112,11 +148,29 @@ const addDevice = async (device_id: number | string | undefined) => {
         message: 'Устройство успешно добавлено!',
         position: 'top'
       })
+      if (userDevices.value && listDevices.value) {
+        const newDevice = listDevices.value.find(device => device.id === device_id);
+        if (newDevice) {
+          userDevices.value.push(newDevice);
+        }
+      }
     })
     .catch((error) => {
-      alert(error)
+      Notify.create({
+        color: 'negative',
+        message: 'Произошла ошибка, попробуйте позже!',
+        position: 'top'
+      })
+      console.error(error)
     })
 };
+
+const listDevicesWithoutUserDevices = computed(() => {
+  if (listDevices.value && userDevices.value) {
+    return listDevices.value.filter(device => !userDevices.value.some(userDevice => userDevice.id === device.id));
+  }
+  return [];
+});
 
 onMounted(async () => {
   user_id.value = Number(localStorage.getItem('userId'))

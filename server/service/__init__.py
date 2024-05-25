@@ -12,7 +12,8 @@ from server.service.devices import (
     get_device_by_name,
     create_device,
     get_user_devices,
-    add_user_devices
+    add_user_devices,
+    delete_user_devices
 )
 from server.service.measurement import (
     get_all_measurements,

@@ -2,7 +2,6 @@ import { Device } from 'src/models'
 import { api } from 'src/boot/axios'
 import { getAuthToken } from './useAuth'
 
-/* TODO */
 export function useDevice() {
 
   const getDeviceList = () => {
@@ -21,10 +20,15 @@ export function useDevice() {
     return api.post(`devices/user/${user_id}`, device_data)
   }
 
+  const removeUserDevice = (user_id: number | undefined, device_id: number | string | undefined) => {
+    return api.delete(`devices/user/${user_id}/${device_id}`)
+  }
+
   return {
     getDeviceList,
     getDevice,
     asignUserDevice,
-    getUserDevice
+    getUserDevice,
+    removeUserDevice
   }
 }

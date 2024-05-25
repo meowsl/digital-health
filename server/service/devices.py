@@ -68,3 +68,22 @@ def add_user_devices(db: Session, user_id: int, devices: schemas.UserDevices):
     db.refresh(db_user)
 
     return db_user
+
+def delete_user_devices(db: Session, user_id: int, device_id: int):
+    '''
+    Удаление устройства пользователя
+    '''
+    db_user = get_user(db, user_id=user_id)
+    device = db.query(models.Device).filter(models.Device.id == device_id).first()
+
+    if not device:
+        raise HTTPException(status_code=404, detail="Device not found")
+
+    if device in db_user.devices:
+        db_user.devices.remove(device)
+        db.commit()
+        db.refresh(db_user)
+        return db_user
+    else:
+        raise HTTPException(status_code=404, detail="Device not associated with the user")
+

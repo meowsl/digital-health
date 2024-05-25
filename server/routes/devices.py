@@ -72,3 +72,21 @@ async def add_devices(user_id: int, devices: schemas.UserDevices, db: SessionLoc
             "new_devices": devices.device_id
         }
     })
+
+@devices_router.delete("/user/{user_id}/{device_id}", summary="Delete target device from user")
+async def delete_device(user_id: int, device_id: int, db: SessionLocal = Depends(get_db)):
+    '''
+    Отвязка устройства от пользователя
+    '''
+    deleted_device = service.delete_user_devices(db=db, user_id=user_id, device_id=device_id)
+
+    if deleted_device:
+        return JSONResponse(status_code=200, content={
+            "message": "success",
+            "data": {
+                "user_id": user_id,
+                "deleted_device_id": device_id
+            }
+        })
+    else:
+        raise HTTPException(status_code=404, detail="Device not found or not associated with the user")
