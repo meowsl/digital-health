@@ -6,7 +6,7 @@
 
     <p class="text-h4 text-white q-mb-md">Здравствуйте, {{ firstname }}!</p>
     <p class="text-h6 text-white q-mb-md text-center">Добро пожаловать в демо версию! <br> Здесь Вы можете
-      протестировать что-то</p>
+      протестировать сервер.</p>
     <q-form
       class="row items-center q-pb-md"
       @submit.prevent="sendMessage"
@@ -42,7 +42,7 @@
         :ripple="false"
         color="purple"
         label="Устройства"
-        @click="sendAction('devices')"
+        @click="sendAction('devices', 'get', 'devices')"
       />
       <q-btn
         class="imitation-steps-button q-"
@@ -51,7 +51,7 @@
         :ripple="false"
         color="purple"
         label="Имитация шагов"
-        @click="sendAction('imitation-steps')"
+        @click="sendAction('measurements', 'imitation-steps')"
       />
       <q-btn
         class="imitation-pulse-button q-"
@@ -60,7 +60,7 @@
         :ripple="false"
         color="purple"
         label="Имитация пульса"
-        @click="sendAction('imitation-pulse')"
+        @click="sendAction('measurements', 'imitation-pulse')"
       />
       <q-btn
         class="steps-button q-"
@@ -69,7 +69,7 @@
         :ripple="false"
         color="purple"
         label="Шаги"
-        @click="sendAction('steps')"
+        @click="sendAction('measurements', 'get', 'steps')"
       />
       <q-btn
         class="pulse-butthon"
@@ -78,7 +78,7 @@
         :ripple="false"
         color="purple"
         label="Пульс"
-        @click="sendAction('pulse')"
+        @click="sendAction('measurements', 'get', 'pulse')"
       />
     </div>
     <q-scroll-area
@@ -88,11 +88,21 @@
       <div
         v-for="(message, index) in messages"
         :key="index"
-        :class="message.type"
+        :class="message.type === 'sent' ? 'sent' : 'received'"
       >
         <div class="message-content">{{ message.content }}</div>
       </div>
     </q-scroll-area>
+    <div class="q-mb-lg row items-center q-mt-sm">
+      <q-avatar
+        :color="isConnected ? 'green' : 'red'"
+        text-color="white"
+        size="15px"
+        icon="fas fa-circle"
+        :class="isConnected ? 'glow-green' : 'glow-red'"
+      />
+      <p class="text-white q-ml-sm">Соединение</p>
+    </div>
   </div>
 </template>
 
@@ -105,9 +115,9 @@ import { QScrollArea } from 'quasar'
 const authStore = useAuthStore()
 
 const ws = ref<WebSocket | null>(null)
-
-const request = ref('Привет')
+const request = ref('{"type": "message", "content": "Привет"}')
 const messages = ref<Message[]>([])
+const isConnected = ref(false) // Add this line
 
 const firstname = computed(() => authStore.user?.firstName)
 
@@ -116,8 +126,16 @@ const scrollAreaRef = ref<QScrollArea | null>(null)
 onMounted(() => {
   const user_id = localStorage.getItem('userId')
   ws.value = new WebSocket(`ws://localhost:8000/ws/${user_id}`)
+  ws.value.onopen = () => {
+    isConnected.value = true
+  }
+  ws.value.onclose = () => {
+    isConnected.value = false
+  }
   ws.value.onmessage = (event: MessageEvent) => {
-    messages.value.push({ type: 'received', content: event.data })
+    const receivedMessage = JSON.parse(event.data)
+    console.log(receivedMessage)
+    messages.value.push({ type: receivedMessage.type, content: receivedMessage.content })
     nextTick(() => {
       scrollToBottom()
     })
@@ -142,10 +160,15 @@ const sendMessage = () => {
   }
 }
 
-const sendAction = (message: string) => {
+const sendAction = (type: string, action: string, data?: string) => {
   if (ws.value) {
-    ws.value.send(message)
-    messages.value.push({ type: 'sent', content: message })
+    const message = {
+      type: type,
+      action: action,
+      data: data
+    }
+    ws.value.send(JSON.stringify(message))
+    messages.value.push({ type: 'sent', content: JSON.stringify(message) })
   }
 }
 </script>
