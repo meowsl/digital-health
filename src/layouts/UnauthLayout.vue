@@ -1,20 +1,17 @@
 <template>
-  <q-layout
-    view="hhh lpR fFf"
-    v-if="mediaIsPhone"
-  >
+  <q-layout view="hhh lpR fFf">
     <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
-  <q-layout
+  <!-- <q-layout
     view="lHh Lpr lFf"
     v-else
   >
     <q-page-container>
       <NoMobile />
     </q-page-container>
-  </q-layout>
+  </q-layout> -->
 </template>
 
 <script setup lang='ts'>

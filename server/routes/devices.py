@@ -50,7 +50,6 @@ async def get_devices(user_id: int, db: SessionLocal = Depends(get_db)):
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    print("here")
     return service.get_user_devices(db=db, user_id=user_id)
 
 @devices_router.post("/user/{user_id}", summary="Add new device to user")

@@ -22,6 +22,13 @@ const routes: RouteRecordRaw[] = [
       { path: '/auth', name: 'AuthPage', component: () => import('pages/AuthPage.vue') }
     ]
   },
+  {
+    path: '/websocket',
+    component: () => import('layouts/WsLayout.vue'),
+    children: [
+      { path: '/websocket', name: 'WsPage', component: () => import('pages/WsPage.vue') }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

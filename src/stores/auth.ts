@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('authStore', {
           console.log(e.data.data)
           const token = e.data.data.access
           localStorage.setItem('token', token)
-          this.router.push({ name: 'IndexPage' })
+          this.router.push({ name: 'WsPage' })
           if (this.user && e.data.data.user_id) {
             localStorage.setItem('userId', e.data.data.user_id)
           }

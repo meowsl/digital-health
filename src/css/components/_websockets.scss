@@ -1,0 +1,51 @@
+.messages {
+  width: 50%;
+  height: 25rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 1rem;
+  }
+}
+
+
+.sent,
+.received {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.sent .message-content,
+.received .message-content {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.sent {
+  justify-content: flex-end;
+}
+
+.sent .message-content {
+  background-color: #dcf8c6;
+}
+
+.received {
+  justify-content: flex-start;
+}
+
+.received .message-content {
+  background-color: #f8dcf4;
+}
